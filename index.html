@@ -254,8 +254,15 @@ async function submitConnect(){
     closeSheet();
     await syncFromServer();
   }catch(e){
+    let diag = '';
+    try{
+      await fetch(url.replace(/\/+$/,'') + '/health', { mode: 'no-cors' });
+      diag = ' [сервер ДОСЯЖНИЙ — це CORS]';
+    }catch(e2){
+      diag = ' [сервер НЕДОСЯЖНИЙ взагалі]';
+    }
     const el = document.getElementById('connectErr');
-    el.textContent = 'Помилка: ' + (e && e.message ? e.message : String(e));
+    el.textContent = 'Помилка: ' + (e && e.message ? e.message : String(e)) + diag;
     el.style.display = 'block';
   }
 }
