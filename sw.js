@@ -14,8 +14,9 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  // Network-first for Google APIs (auth/drive), cache-first for the app shell
-  if (e.request.url.includes('googleapis.com') || e.request.url.includes('accounts.google.com')) {
+  const url = new URL(e.request.url);
+  // Не чіпаємо нічого, крім власних файлів застосунку (той самий домен, GET)
+  if (url.origin !== self.location.origin || e.request.method !== 'GET') {
     return;
   }
   e.respondWith(
