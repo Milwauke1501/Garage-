@@ -254,7 +254,9 @@ async function submitConnect(){
     closeSheet();
     await syncFromServer();
   }catch(e){
-    document.getElementById('connectErr').style.display = 'block';
+    const el = document.getElementById('connectErr');
+    el.textContent = 'Помилка: ' + (e && e.message ? e.message : String(e));
+    el.style.display = 'block';
   }
 }
 function sheetDisconnect(){
